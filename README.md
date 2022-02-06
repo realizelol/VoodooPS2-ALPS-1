@@ -1,5 +1,49 @@
 # VoodooPS2-ALPS
 
+## ONLY FOR TESTING DO NOT INSTALL !
+
+#### SSDT-PS2K.aml working
+swap alt+win keys
+#### SSDT-PS2M.aml ~working~
+set QuietTimeAfterTyping->0 or RM,deliverNotifications->0
+- meanwhile use this:
+```
+ioio -s ALPS 'QuietTimeAfterTyping' 0
+```
+or via autostart (user login):
+```
+cat > ~/Library/LaunchAgents/com.$USER.loginQuietTimeAfterTyping0.plist << EOF;
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+   <key>KeepAlive</key>
+   <false/>
+   <key>Label</key>
+   <string>com.chris.loginQuietTimeAfterTyping0</string>
+   <key>ProgramArguments</key>
+   <array>
+     <string>/usr/local/bin/ioio</string>
+     <string>-s</string>
+     <string>ALPS</string>
+     <string>QuietTimeAfterTyping</string>
+     <string>0</string>
+   </array>
+   <key>RunAtLoad</key>
+   <true/>
+</dict>
+</plist>
+EOF
+launchctl load ~/Library/LaunchAgents/com.$USER.loginQuietTimeAfterTyping0.plist
+#### ALLOW ioio !
+launchctl start com.$USER.loginQuietTimeAfterTyping0
+```
+To run it for all users change to path to `/Library/LaunchDaemons`
+
+Get <b>ioio</b> from here: [RehabMan-ioio-2014-0122.zip](https://bitbucket.org/RehabMan/os-x-ioio/downloads/RehabMan-ioio-2014-0122.zip)
+
+<br/>
+<br/>
+
 This new VoodooPS2 kext, made for ALPS touchpads, adds support for Magic Trackpad 2 emulation in order to use macOS native driver instead of handling all gestures itself.
 
 This driver is a fork of DrHurt's VoodooPS2 repo with included fixes by 1Revenger1.
